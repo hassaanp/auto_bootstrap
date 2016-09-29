@@ -134,7 +134,7 @@ function build_tools() {
   tryexec sudo sysctl kernel.core_pattern='/opt/pg/core/core.%t.%p.%e'
   popd
   echo "Installing gccgo"
-  tryexec sudo apt-get install gccgo -y
+  tryexec sudo apt-get install gccgo=4:4.7.0~rc1-1ubuntu5 -y
   echo "Configuring gccgo"
   tryexec sudo chown -R $USER:$USER /usr/lib/go/
   export GOPATH=/usr/lib/go;export PATH=$PATH:$GOPATH/bin
