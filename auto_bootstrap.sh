@@ -199,8 +199,91 @@ function build_alps()  {
   popd
   echo "======ALPS Built Successfully======"
 }
+
 function build_balicek() {
+  echo "======Building Balicek======"
+  echo "Cloning Balicek"
+  tryexec git clone ssh://$git_username@gerrit.plumgrid.com:29418//balicek.git ~/work/balicek
+  pushd ~/work/balicek
+  echo "Installing commit hook"
+  tryexec scp -p -P 29418 $git_username@gerrit.plumgrid.com:hooks/commit-msg .git/hooks/
+  echo "Creating build directory"
+  tryexec mkdir build
+  pushd ~/work/balicek/build
+  echo "Installing balicek"
+  tryexec cmake ..
+  tryexec make -k -j4
+  popd
+  popd
+  echo "======Balicek Built Successfully======"
 }
-function build_pgui() {}
-function build_sal() {}
-function build_pkg {}
+
+function build_pgui() {
+  echo "Skipping PG_UI because it has issues with 16.04. Please attempt to install at your own leisure."
+}
+
+function build_sal() {
+  echo "======Building SAL======"
+  echo "Installing libpcre3-dev"
+  tryexec sudo apt-get install libpcre3-dev -y
+  echo "Cloning SAL"
+  tryexec git clone ssh://$git_username@gerrit.plumgrid.com:29418//sal.git ~/work/sal
+  pushd ~/work/sal
+  echo "Installing commit hook"
+  tryexec scp -p -P 29418 $git_username@gerrit.plumgrid.com:hooks/commit-msg .git/hooks/
+  echo "Creating Build directory"
+  tryexec mkdir build
+  pushd ~/work/sal/build
+  echo "Installing SAL"
+  tryexec cmake ..
+  tryexec make -k -j4
+  echo "======SAL Build Successfully======"
+}
+
+function build_pkg {
+  echo "======Building PKG======"
+  echo "Installing Packages: python-vm-builder libprotobuf-java=2.4.1-1ubuntu2 libboost-program-options1.48-dev puppet-common"
+  tryexec sudo apt-get install python-vm-builder -y
+  tryexec sudo apt-get install libprotobuf-java=2.4.1-1ubuntu2 -y
+  tryexec sudo apt-get install libboost-program-options1.48-dev -y
+  tryexec sudo apt-get install puppet-common -y
+  echo "Installing puppet"
+  tryexec curl -O https://apt.puppetlabs.com/puppetlabs-release-precise.deb && sudo dpkg -i puppetlabs-release-precise.deb # dpkg >= 1.17.7 # curl -o- https://apt.puppetlabs.com/puppetlabs-release-precise.deb | sudo dpkg --install -
+  echo "Installing and configuring Selenium"
+  tryexec wget -P /tmp http://192.168.10.167/tests/unstable/selenium-java-2.39.0/selenium-java-2.39.0.zip
+  JAVA_DIR_FOR_SELENIUM='/opt/local/share/java/'
+  tryexec unzip -o /tmp/selenium-java-2.39.0.zip -d /tmp/
+  tryexec sudo mkdir -p "${JAVA_DIR_FOR_SELENIUM}"
+  tryexec sudo cp /tmp/selenium-2.39.0/libs/* "${JAVA_DIR_FOR_SELENIUM}"
+  tryexec sudo cp /tmp/selenium-2.39.0/libs/* "${JAVA_DIR_FOR_SELENIUM}"
+  tryexec sudo cp /tmp/selenium-2.39.0/selenium-java-2.39.0.jar "${JAVA_DIR_FOR_SELENIUM}"
+  tryexec sudo cp /tmp/selenium-2.39.0/selenium-java-2.39.0.jar "${JAVA_DIR_FOR_SELENIUM}"
+  tryexec rm -rf /tmp/selenium-2.39.0
+  echo "Running apt-get update"
+  tryexec sudo apt-get update
+  tryexec sudo apt-get install puppet
+  echo "Cloning PKG"
+  git clone ssh://$git_username@gerrit.plumgrid.com:29418//pkg.git ~/work/pkg
+  pushd ~/work/pkg
+  echo "Installing commit hook"
+  tryexec scp -p -P 29418 $git_username@gerrit.plumgrid.com:hooks/commit-msg .git/hooks/ 
+  tryexec mkdir build
+  echo "Installing PKG"
+  pushd ~/work/pkg/build
+  tryexec cmake ..
+  tryexec make -k -j4
+  popd
+  popd
+  echo "======PKG Built Successfully======"
+}
+
+# Running the Bootstrap:
+echo ">>>>>>>>>>Initializing Bootstrap<<<<<<<<<<"
+build_tools
+build_corelib
+build_alps
+build_balicek
+build_pgui
+build_sal
+build_pkg
+echo ">>>>>>>>>>Bootstrap Done<<<<<<<<<<"
