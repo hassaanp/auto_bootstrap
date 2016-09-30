@@ -133,6 +133,9 @@ function build_tools() {
   tryexec sudo sh -c "echo 'kernel.core_pattern = /opt/pg/core/core.%t.%p.%e' >> /etc/sysctl.conf"
   tryexec sudo sysctl kernel.core_pattern='/opt/pg/core/core.%t.%p.%e'
   popd
+  echo "Uninstalling gccgo"
+  tryexec sudo apt-get remove gccgo-4.7 -y
+  tryexec sudo apt-get remove gccgo-6 -y
   echo "Installing gccgo"
   tryexec sudo apt-get install gccgo=4:4.7.0~rc1-1ubuntu5 -y
   echo "Configuring gccgo"
