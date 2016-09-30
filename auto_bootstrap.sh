@@ -190,6 +190,7 @@ function build_alps()  {
   echo "Cloning alps"
   tryexec git clone ssh://$git_username@gerrit.plumgrid.com:29418/alps.git ~/work/alps
   pushd ~/work/alps
+  tryexec sed -i '/pgtop/s/^/#/' ~/work/alps/scripts/CMakeLists.txt
   tryexec scp -p -P 29418 $git_username@gerrit.plumgrid.com:hooks/commit-msg .git/hooks/
   tryexec mkdir build
   pushd ~/work/alps/build/
