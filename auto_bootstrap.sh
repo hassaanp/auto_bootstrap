@@ -206,6 +206,7 @@ function build_alps()  {
 
 function build_balicek() {
   echo "======Building Balicek======"
+  tryexec source /opt/pg/env/alps.bashrc
   echo "Cloning Balicek"
   tryexec git clone ssh://$git_username@gerrit.plumgrid.com:29418//balicek.git ~/work/balicek
   pushd ~/work/balicek
@@ -265,7 +266,7 @@ function build_pkg {
   tryexec rm -rf /tmp/selenium-2.39.0
   echo "Running apt-get update"
   tryexec sudo apt-get update
-  tryexec sudo apt-get install puppet
+  tryexec sudo apt-get install puppet -y
   echo "Cloning PKG"
   git clone ssh://$git_username@gerrit.plumgrid.com:29418//pkg.git ~/work/pkg
   pushd ~/work/pkg
