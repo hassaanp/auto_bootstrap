@@ -84,7 +84,7 @@ function build_tools() {
   echo "Running apt-get update"
   tryexec sudo apt-get update
   echo "Installing Packages: libpcap-dev tcl8.5 tk8.5 iovisor-dkms libboost-python1.48-dev postgresql-server-dev-9.1 libprotobuf-java=2.4.1-1ubuntu2 gccgo=4:4.7.0~rc1-1ubuntu5 gcc-multilib=4:4.6.3-1ubuntu5 golang-go=2:1-5 libgd2-xpm librtmp0"
-  tryexec sudo apt-get install libpcap-dev tcl8.5 tk8.5
+  tryexec sudo apt-get install libpcap-dev tcl8.5 tk8.5 -y
   tryexec sudo apt-get install -y iovisor-dkms libboost-python1.48-dev postgresql-server-dev-9.1 libprotobuf-java=2.4.1-1ubuntu2 gccgo=4:4.7.0~rc1-1ubuntu5 gcc-multilib=4:4.6.3-1ubuntu5 golang-go=2:1-5 libgd2-xpm librtmp0
   echo "Installing PLUMgrid Packages: plumgrid-psutil plumgrid-six plumgrid-requests plumgrid-python-keystoneclient plumgrid-python-novaclient plumgrid-requests plumgrid-netifaces plumgrid-netaddr plumgrid-pyroute2 plumgrid-argcomplete plumgrid-docopt plumgrid-esper plumgrid-gcc plumgrid-jira plumgrid-jshint plumgrid-jsonrpclib plumgrid-nodeapi plumgrid-rpyc plumgrid-sigmund plumgrid-tabulate plumgrid-websocket-client libluajit-5.1-dev"
   tryexec sudo apt-get install -y plumgrid-psutil plumgrid-six plumgrid-requests plumgrid-python-keystoneclient plumgrid-python-novaclient plumgrid-requests plumgrid-netifaces plumgrid-netaddr plumgrid-pyroute2 plumgrid-argcomplete plumgrid-docopt plumgrid-esper plumgrid-gcc plumgrid-jira plumgrid-jshint plumgrid-jsonrpclib plumgrid-nodeapi plumgrid-rpyc plumgrid-sigmund plumgrid-tabulate plumgrid-websocket-client libluajit-5.1-dev
