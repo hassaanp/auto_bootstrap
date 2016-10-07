@@ -1,5 +1,17 @@
 #!/bin/bash
-git_username="hassaanp"
+echo "Please enter your git username: "
+read git_username
+echo "You entered: $git_username"
+echo "Please enter your pg email: "
+read git_email
+echo "You entered: $git_email"
+
+function setup_git() {
+  git config --global user.name "$git_username"
+  git config --global user.email $git_email
+  git config --global push.default upstream
+}
+
 function print_stack() {
   local i
   local stack_size=${#FUNCNAME[@]}
@@ -51,7 +63,12 @@ EOF
 function build_tools() {
   echo "======Building Tools======"
   echo "Pointing sources.list to PLUMgrid repo"
-  tryexec sudo cp /etc/apt/sources.list /etc/apt/sources.list.backup
+  if [ -f "/etc/apt/sources.list.backup" ]
+  then
+    echo "sources.backup exists... skipping backup creation"
+  else
+    tryexec sudo cp /etc/apt/sources.list /etc/apt/sources.list.backup
+  fi
   tryexec add_pg_sources "/etc/apt/sources.list"
   tryexec sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 554E46B2
   tryexec sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 40EADBBF
@@ -59,6 +76,7 @@ function build_tools() {
   tryexec sudo apt-get update
   echo "Installing Packages: apache2 openssh-server make git g++ plumgrid-install-tools curl"
   tryexec sudo apt-get install apache2 openssh-server make git g++ plumgrid-install-tools curl -y
+  tryexec setup_git
   echo "Cloning Tools"
   tryexec git clone ssh://$git_username@gerrit.plumgrid.com:29418/tools.git ~/work/tools
   echo "Installing Packages: build-essential libboost-program-options1.48-dev libboost-regex1.48-dev libboost-system1.48-dev libboost-thread1.48-dev libboost-random1.48-dev libev4 libprotobuf-lite7 libdom4j-java libtk-img openssl liblua5.1-md5-dev plumgrid-zmq4 plumgrid-benchmark plumgrid-coumap libv8-dev=3.7.12.22-3 bison cpanminus curl git flex mercurial protobuf-compiler pax-utils puppet puppet-common facter cgroup-bin rubygems bridge-utils httperf libgtest-dev"
