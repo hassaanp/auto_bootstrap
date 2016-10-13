@@ -1,10 +1,6 @@
 #!/bin/bash
-echo "Please enter your git username: "
-read git_username
-echo "You entered: $git_username"
-echo "Please enter your pg email: "
-read git_email
-echo "You entered: $git_email"
+git_username="hassaanp"
+git_email="hassaanp@plumgrid.com"
 
 function setup_git() {
   git config --global user.name "$git_username"
@@ -83,7 +79,7 @@ function build_tools() {
   echo "Installing Packages: python-pcapy libpcap0.8 libprotobuf7 python-pip libc-ares2 libc6 libcairo2 libcap2 libgcrypt11 libgdk-pixbuf2.0-0 libgeoip1 libglib2.0-0 libgnutls26 libgtk2.0-0 libk5crypto3 libkrb5-3 liblua5.1-0 libpcap0.8 libportaudio2 libsmi2ldbl zlib1g"
   tryexec sudo apt-get install -y python-pcapy=0.10.8-1build1 libpcap0.8=1.7.4-2 libprotobuf7=2.4.1-1ubuntu2 python-pip=1.0-1build1 libc-ares2=1.7.5-1 libc6=2.23-0ubuntu3 libcairo2=1.14.6-1 libcap2=1:2.24-12 libgcrypt11=1.5.0-3ubuntu0.2 libgdk-pixbuf2.0-0=2.32.2-1ubuntu1.2 libgeoip1=1.6.9-1 libglib2.0-0=2.48.1-1~ubuntu16.04.1 libgnutls26=2.12.14-5ubuntu3.8 libgtk2.0-0=2.24.30-1ubuntu1 libk5crypto3=1.13.2+dfsg-5 libkrb5-3=1.13.2+dfsg-5 liblua5.1-0=5.1.5-8ubuntu1 libpcap0.8=1.7.4-2 libportaudio2=19+svn20140130-1build1 libsmi2ldbl=0.4.8+dfsg2-4build1 zlib1g=1:1.2.8.dfsg-2ubuntu4
   echo "Installing Packages: cmake dkms libcurl4-openssl-dev libyaml-dev libxml2-dev libssl-dev libsqlite3-dev libprotoc-dev libpq-dev libpcre3-dev libmnl-dev libmagic-dev liblua5.1-0-dev libedit-dev liblua5.1-0-dev gcc-4.7 g++-4.7 debhelper libpcap-dev libpango1.0-0 gcc-4.7 g++-4.7 rpm"
-  tryexec sudo apt-get install -y cmake dkms=2.2.0.3-2ubuntu11.2 libcurl4-openssl-dev=7.47.0-1ubuntu2.1 libyaml-dev=0.1.6-3 libxml2-dev=2.9.3+dfsg1-1ubuntu0.1 libssl-dev=1.0.2g-1ubuntu4.5 libsqlite3-dev=3.11.0-1ubuntu1 libprotoc-dev=2.4.1-1ubuntu2 libpq-dev=9.5.4-0ubuntu0.16.04 libpcre3-dev=2:8.38-3.1 libmnl-dev=1.0.3-5 libmagic-dev=1:5.25-2ubuntu1 liblua5.1-0-dev=5.1.5-8ubuntu1 libedit-dev=3.1-20150325-1ubuntu2 liblua5.1-0-dev=5.1.5-8ubuntu1 gcc-4.7=4.7.4-3ubuntu12 g++-4.7=4.7.4-3ubuntu12 debhelper=9.20160115ubuntu3 libpcap-dev=1.7.4-2 libpango1.0-0=1.38.1-1 gcc-4.7=4.7.4-3ubuntu12 g++-4.7=4.7.4-3ubuntu12 rpm=4.12.0.1+dfsg1-3build3
+  tryexec sudo DEBIAN_FRONTEND=noninteractive apt-get install -y cmake dkms=2.2.0.3-2ubuntu11.2 libcurl4-openssl-dev=7.47.0-1ubuntu2.1 libyaml-dev=0.1.6-3 libxml2-dev=2.9.3+dfsg1-1ubuntu0.1 libssl-dev=1.0.2g-1ubuntu4.5 libsqlite3-dev=3.11.0-1ubuntu1 libprotoc-dev=2.4.1-1ubuntu2 libpq-dev=9.5.4-0ubuntu0.16.04 libpcre3-dev=2:8.38-3.1 libmnl-dev=1.0.3-5 libmagic-dev=1:5.25-2ubuntu1 liblua5.1-0-dev=5.1.5-8ubuntu1 libedit-dev=3.1-20150325-1ubuntu2 liblua5.1-0-dev=5.1.5-8ubuntu1 gcc-4.7=4.7.4-3ubuntu12 g++-4.7=4.7.4-3ubuntu12 debhelper=9.20160115ubuntu3 libpcap-dev=1.7.4-2 libpango1.0-0=1.38.1-1 gcc-4.7=4.7.4-3ubuntu12 g++-4.7=4.7.4-3ubuntu12 rpm=4.12.0.1+dfsg1-3build3
   echo "Adding openjdk repo, running apt-get and installing openjdk-7"
   tryexec sudo add-apt-repository ppa:openjdk-r/ppa -y
   tryexec sudo apt-get update
