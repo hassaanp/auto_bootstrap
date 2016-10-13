@@ -59,6 +59,12 @@ EOF
 function build_tools() {
   export LC_ALL=C
   echo "======Building Tools======"
+  echo "Adding gerrit/jira to hosts file"
+  tryexec sudo bash -c "cat >> /etc/hosts <<DELIM__
+192.168.10.11   jira.plumgrid.com
+192.168.10.77   gerrit.plumgrid.com gerrit
+10.8.0.1        plumgrid-vpn1-internal
+DELIM__"
   echo "Pointing sources.list to PLUMgrid repo"
   tryexec add_pg_sources "/etc/apt/sources.list.d/plumgrid.list"
   tryexec sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 554E46B2
@@ -66,9 +72,14 @@ function build_tools() {
   echo "Running apt-get update"
   tryexec sudo apt-get update
   echo "Installing Packages: apache2=2.2.22-1ubuntu1.6 openssh-server=1:7.2p2-4ubuntu2.1 make=4.1-6 git g++=4:5.3.1-1ubuntu1 plumgrid-install-tools curl=7.47.0-1ubuntu2.1"
-  tryexec sudo apt-get install apache2=2.2.22-1ubuntu1.6 openssh-server=1:7.2p2-4ubuntu2.1 make=4.1-6 git g++=4:5.3.1-1ubuntu1 plumgrid-install-tools curl=7.47.0-1ubuntu2.1 libfl-dev=2.5.35-10ubuntu3 libbison-dev=1:2.5.dfsg-2.1 mercurial-common=2.0.2-1ubuntu1 -y
+  tryexec sudo apt-get install apache2=2.2.22-1ubuntu1.6 openssh-server=1:7.2p2-4ubuntu2.1 make=4.1-6 git g++=4:5.3.1-1ubuntu1 plumgrid-install-tools curl=7.47.0-1ubuntu2.1 libfl-dev=2.5.35-10ubuntu3 libbison-dev=1:2.5.dfsg-2.1 mercurial-common=2.0.2-1ubuntu1 expect -y
   tryexec setup_git
   echo "Cloning Tools"
+  /usr/bin/expect <<EOD
+spawn git clone ssh://hassaanp@gerrit.plumgrid.com:29418/tools.git $HOME/work/tools
+expect "Are you sure you want to continue connecting (yes/no)? "
+send "yes\n" 
+EOD
   tryexec git clone ssh://$git_username@gerrit.plumgrid.com:29418/tools.git ~/work/tools
   echo "Installing Packages: build-essential libboost-program-options1.48-dev libboost-regex1.48-dev libboost-system1.48-dev libboost-thread1.48-dev libboost-random1.48-dev libev4 libprotobuf-lite7 libdom4j-java libtk-img openssl liblua5.1-md5-dev plumgrid-zmq4 plumgrid-benchmark plumgrid-coumap libv8-dev=3.7.12.22-3 bison cpanminus curl git flex mercurial protobuf-compiler pax-utils puppet puppet-common facter cgroup-bin rubygems bridge-utils httperf libgtest-dev"
   tryexec  sudo apt-get install build-essential=12.1ubuntu2 libboost-program-options1.48-dev=1.48.0-3 libboost-regex1.48-dev=1.48.0-3 libboost-system1.48-dev=1.48.0-3 libboost-thread1.48-dev=1.48.0-3 libboost-random1.48-dev=1.48.0-3 libev4 libprotobuf-lite7 libdom4j-java=1.6.1+dfsg.2-5 libtk-img=1:1.3-release-11 openssl=1.0.2g-1ubuntu4.5 liblua5.1-md5-dev plumgrid-zmq4 plumgrid-benchmark plumgrid-coumap libv8-dev=3.7.12.22-3 bison=1:2.5.dfsg-2.1 cpanminus=1.5007-1 flex=2.5.35-10ubuntu3 mercurial=2.0.2-1ubuntu1 protobuf-compiler=2.4.1-1ubuntu2 pax-utils=0.2.3-2build2 puppet puppet-common facter cgroup-bin=0.37.1-1ubuntu10.1 rubygems=1.8.15-1ubuntu0.1 bridge-utils=1.5-2ubuntu7 httperf=0.9.0-2build1 libgtest-dev=1.6.0-1ubuntu4 libprotobuf-dev=2.4.1-1ubuntu2 -y
