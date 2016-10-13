@@ -108,6 +108,7 @@ EOD
   tryexec sudo chown -R $USER:$USER /opt/local/
   echo "Fixing /home/plumgrid/work/tools/packages/vijava/com/vmware/vim25/ws/WSClient.java"
   tryexec sed -i '128d' ~/work/tools/packages/vijava/com/vmware/vim25/ws/WSClient.java
+  tryexec sed -i '127 a + " WSClient.invoke()# SOAP Req Retrying(MAX=5)"' ~/work/tools/packages/vijava/com/vmware/vim25/ws/WSClient.java
   echo "Commenting out CMakeLists.txt in tools folder"
   tryexec sed -i '23,26 s/^/#/' ~/work/tools/CMakeLists.txt
   echo "Creating build folder"
